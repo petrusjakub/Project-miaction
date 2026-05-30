@@ -1,0 +1,42 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Create the complete MiAction product page (index.html) with all tabs, interactive premium calculator, FAQ accordion, and WhatsApp integration. Single self-contained HTML file following the exact CSS/JS patterns from index (17).html but with MiAction content.",
+  "status": "in_progress",
+  "steps": [
+    "Create /projects/sandbox/Project-miaction/index.html as a single self-contained HTML file",
+    "Use the exact same CSS styles from index (17).html (green Manulife theme, cards, tabs, calc-tabs, FAQ accordion, floating WA, responsive media queries)",
+    "Sticky WA banner at top: text 'Petrus Jakub Partner Bisnis Manulife' + WA icon + '087781896087', linking to https://wa.me/6287781896087?text=Pak%20Petrus%2C%20saya%20mau%20tanya%20soal%20MiAction",
+    "Header section: title 'MiAction (MiAssurance Protection Plan)', subtitle 'Asuransi Dwiguna Individu dari PT Asuransi Jiwa Manulife Indonesia'",
+    "Tab navigation with 6 tabs: Ringkasan Produk, Manfaat, Kalkulator Premi, Ilustrasi, Cara Klaim, FAQ",
+    "Tab 1 (Ringkasan Produk): Explain what MiAction is in simple Indonesian - endowment insurance with guaranteed annual payments, end-of-term benefit, death benefit. Include product details (usia masuk, masa pertanggungan 20 tahun, MPP options, minimum premi, mata uang, max UP Rp5.5M, underwriting rules SIO/Full UW/GIO)",
+    "Tab 2 (Manfaat): 4 key benefits explained simply - (1) Manfaat Pembayaran Tunai Tahunan from year 6-20, (2) Manfaat Meninggal Dunia 100% UP, (3) Manfaat Akhir Masa Pertanggungan, (4) Optional rider ALP Plus. Include benefit percentage tables for both <30jt and >=30jt tiers, and total return ratios",
+    "Tab 3 (Kalkulator Premi - MOST CRITICAL): Interactive calculator with: (a) Select MPP: Sekaligus/3 Tahun/5 Tahun, (b) Select Mode Pembayaran: Tahunan/Semesteran/Kuartalan/Bulanan, (c) Input Premi amount with validation. Calculate and display: Premi Dasar Tahunan (using modal faktor), UP (110% x MPP x Premi Dasar Tahunan or 110% x Premi Sekaligus), Manfaat Tunai Tahunan (% based on tier), Total Tunai (x15), Manfaat Akhir (% based on tier), Manfaat Meninggal (=UP), Total Manfaat Hidup, Total Premi Dibayar, Rasio manfaat/premi. Modal Faktor: Tahunan=1.0, Semesteran=0.525, Kuartalan=0.275, Bulanan=0.095. Threshold: Premi Dasar Tahunan >= 30jt uses higher percentages. For Sekaligus only >= 30jt tier exists (disable < 30jt). Minimums: Sekaligus min 36jt, MPP 3 min 12jt/tahun, MPP 5 min 6jt/tahun (validate against Premi Dasar Tahunan after modal factor conversion)",
+    "Tab 4 (Ilustrasi): Show 4 example plans as plan-cards (same card style as template): Plan 1 (6jt/thn MPP5), Plan 2 (10jt/thn MPP5), Plan 3 (30jt/thn MPP5), Plan 4 (100jt/thn MPP5). Each card shows: premi/tahun, manfaat tunai tahunan, manfaat akhir, asuransi jiwa, total premi dibayar, total manfaat",
+    "Tab 5 (Cara Klaim): Explain claim process through MiAccount app or marketing office. Required documents. 30-day processing. Exclusions (suicide 2yr, criminal, death penalty, murder by beneficiary). Contact info: (021) 2555 7777, 0800 1 606060, customerserviceid@manulife.com, address",
+    "Tab 6 (FAQ): At least 8 FAQ items covering: What is MiAction, who can buy, how long coverage, what are the benefits, how calculator works, what is ALP Plus, how to claim, what are exclusions. Use the same accordion pattern from template",
+    "Floating WA button bottom-right with tooltip, same as template",
+    "JavaScript: Tab switching (same pattern), FAQ accordion (same pattern), Calculator logic with proper Indonesian number formatting (dots for thousands), input validation with user-friendly error messages",
+    "All text in Bahasa Indonesia, written for lay people (simple language, avoid jargon)"
+  ],
+  "acceptance_criteria": [
+    "index.html exists at /projects/sandbox/Project-miaction/index.html",
+    "File is fully self-contained HTML with no external dependencies",
+    "All 6 tabs are navigable and display correct content",
+    "Calculator correctly computes: for MPP 5, Tahunan, Rp10.000.000 input -> Premi Dasar Tahunan = 10jt, UP = 55jt, Tunai Tahunan = 1.2jt (12%), Total Tunai = 18jt, Akhir = 62.5jt (625%), Total Manfaat Hidup = 80.5jt, Total Premi = 50jt, Rasio ~1.61x",
+    "Calculator correctly computes: for MPP 5, Tahunan, Rp30.000.000 input -> Premi Dasar Tahunan = 30jt, UP = 165jt, Tunai Tahunan = 4.5jt (15%), Total Tunai = 67.5jt, Akhir = 202.5jt (675%), Total Manfaat Hidup = 270jt, Total Premi = 150jt, Rasio = 1.8x",
+    "Calculator validates minimum premi and shows error for invalid inputs",
+    "WhatsApp links use correct URL with pre-filled MiAction message",
+    "Numbers are formatted in Indonesian style (dots for thousands separator)",
+    "Page is responsive and readable on mobile screens",
+    "FAQ accordion opens/closes correctly"
+  ],
+  "verification": [
+    "Check that /projects/sandbox/Project-miaction/index.html exists and is valid HTML",
+    "Verify the file contains no external resource references (no CDN links, no external CSS/JS/fonts)",
+    "Verify calculator JavaScript logic by reading the code and confirming the formulas match the specification",
+    "Verify WhatsApp URL contains 'MiAction' text and correct phone number 6287781896087"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

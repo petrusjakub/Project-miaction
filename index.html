@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiAction - MiAssurance Protection Plan | Manulife Indonesia</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:#333;background:#f5f5f5;padding-top:48px;padding-bottom:80px}
+a{color:#00a758}
+
+/* WA Banner */
+.wa-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#25D366;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 15px;text-decoration:none;color:#fff;font-weight:700;font-size:clamp(0.85rem,2.5vw,1rem);box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;transition:background .2s}
+.wa-banner:hover{background:#1DA851}
+.wa-banner svg{width:20px;height:20px;fill:#fff;flex-shrink:0}
+.wa-banner span{white-space:nowrap}
+
+/* Floating WA Button */
+.floating-wa{position:fixed;bottom:25px;right:25px;background:#25D366;color:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px rgba(37,211,102,0.4);z-index:9999;transition:transform .2s,box-shadow .2s}
+.floating-wa:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(37,211,102,0.6)}
+.floating-wa svg{width:28px;height:28px;fill:#fff}
+.wa-tooltip{position:fixed;bottom:90px;right:25px;background:#fff;color:#333;padding:8px 14px;border-radius:8px;font-size:.75rem;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,0.15);z-index:9999;white-space:nowrap;opacity:0;transform:translateY(5px);transition:all .3s;pointer-events:none}
+.floating-wa:hover+.wa-tooltip{opacity:1;transform:translateY(0)}
+
+/* Header */
+.header{background:linear-gradient(135deg,#00a758 0%,#006838 100%);color:#fff;padding:30px 20px;text-align:center}
+.header h1{font-size:clamp(1.4rem,4vw,2rem);margin-bottom:5px}
+.header p{font-size:1rem;opacity:.9}
+
+/* Tabs */
+.tabs-container{background:#fff;border-bottom:2px solid #00a758;position:sticky;top:48px;z-index:998;overflow-x:auto;white-space:nowrap;box-shadow:0 2px 5px rgba(0,0,0,0.1);-webkit-overflow-scrolling:touch}
+.tabs{display:flex;padding:0;list-style:none;min-width:max-content}
+.tabs li{padding:12px 16px;cursor:pointer;font-size:.85rem;font-weight:500;color:#555;border-bottom:3px solid transparent;transition:all .2s;user-select:none}
+.tabs li:hover{background:#e8f5e9;color:#00a758}
+.tabs li.active{color:#00a758;border-bottom-color:#00a758;background:#e8f5e9;font-weight:700}
+
+/* Tab Content */
+.tab-content{display:none;padding:30px 20px;max-width:1200px;margin:0 auto}
+.tab-content.active{display:block}
+
+/* Cards */
+.card{background:#fff;border-radius:12px;padding:25px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{color:#00a758;margin-bottom:15px;font-size:1.4rem}
+.card h3{color:#006838;margin:18px 0 10px;font-size:1.1rem}
+.card p,.card li{line-height:1.7;margin-bottom:8px}
+.card ul,.card ol{padding-left:20px}
+
+/* Badges */
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-right:8px;margin-bottom:5px}
+.badge-green{background:#e8f5e9;color:#2e7d32}
+.badge-blue{background:#e3f2fd;color:#1565c0}
+.badge-orange{background:#fff3e0;color:#e65100}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:15px 0;font-size:.85rem;overflow-x:auto;display:block}
+th{background:#00a758;color:#fff;padding:10px 8px;text-align:center;font-weight:600;white-space:nowrap}
+td{padding:8px;text-align:center;border-bottom:1px solid #e0e0e0;white-space:nowrap}
+tr:nth-child(even){background:#f8fdf9}
+tr:hover{background:#e8f5e9}
+
+/* Info boxes */
+.info-box{background:#e8f5e9;border-left:4px solid #00a758;padding:15px;margin:15px 0;border-radius:0 8px 8px 0}
+.highlight-box{background:#fff8e1;border-left:4px solid #ffc107;padding:15px;margin:15px 0;border-radius:0 8px 8px 0}
+
+/* Calculator styles */
+.calc-tabs{display:flex;gap:0;margin-bottom:20px;background:#fff;border-radius:12px;padding:5px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.calc-tab-btn{flex:1;padding:12px 20px;border:none;background:transparent;font-size:.95rem;font-weight:600;font-family:inherit;color:#777;cursor:pointer;border-radius:8px;transition:all .3s}
+.calc-tab-btn.active{background:#00a758;color:#fff;box-shadow:0 2px 8px rgba(0,167,88,0.3)}
+.calc-tab-btn:hover:not(.active){background:rgba(0,167,88,0.08);color:#00a758}
+.calc-controls{background:#fff;border-radius:12px;padding:20px 25px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:25px;display:flex;flex-wrap:wrap;gap:15px;align-items:flex-end}
+.calc-control-group{display:flex;flex-direction:column;gap:5px}
+.calc-control-group label{font-size:.8rem;font-weight:600;color:#00a758;text-transform:uppercase;letter-spacing:.5px}
+.calc-control-group select{padding:10px 35px 10px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:.95rem;font-family:inherit;background:#fff;cursor:pointer;transition:all .3s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300a758' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.calc-control-group select:focus{outline:none;border-color:#00a758;box-shadow:0 0 0 3px rgba(0,167,88,0.15)}
+.calc-control-group input{padding:10px 12px;border:2px solid #e0e0e0;border-radius:8px;font-size:.95rem;font-family:inherit;transition:all .3s;width:180px}
+.calc-control-group input:focus{outline:none;border-color:#00a758;box-shadow:0 0 0 3px rgba(0,167,88,0.15)}
+.calc-btn{padding:10px 24px;background:#00a758;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .3s}
+.calc-btn:hover{background:#006838;box-shadow:0 2px 8px rgba(0,167,88,0.3)}
+
+/* Calculator Results */
+.calc-result{background:#fff;border-radius:12px;padding:25px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:20px}
+.calc-result h3{color:#00a758;margin-bottom:15px;font-size:1.1rem}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
+.result-item{background:#f8fdf9;border-radius:8px;padding:12px 15px;border-left:3px solid #00a758}
+.result-item .result-label{font-size:.78rem;color:#777;font-weight:500;margin-bottom:4px}
+.result-item .result-value{font-size:1.1rem;font-weight:700;color:#006838}
+.result-item.highlight{background:#e8f5e9;border-left-color:#2ECC71}
+.result-item.highlight .result-value{color:#00a758;font-size:1.2rem}
+.calc-error{background:#ffebee;border-left:4px solid #e53935;padding:12px 15px;border-radius:0 8px 8px 0;margin-top:15px;color:#c62828;font-weight:500}
+
+/* Plan Cards */
+.section-title{font-size:clamp(1rem,3vw,1.3rem);font-weight:700;color:#00a758;margin:25px 0 15px;padding-left:12px;border-left:4px solid #2ECC71}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-bottom:30px}
+.plan-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,167,88,0.12);transition:all .3s;opacity:0;transform:translateY(15px)}
+.plan-card.animate{animation:fadeInUp .4s ease forwards}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,167,88,0.2)}
+.plan-card .card-header{background:linear-gradient(135deg,#00a758,#006838);color:#fff;padding:14px 16px;font-weight:700;font-size:1rem}
+.plan-card .card-body{padding:16px}
+.plan-card .premi-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0}
+.plan-card .premi-row:last-child{border-bottom:none}
+.plan-card .premi-label{font-size:.8rem;color:#777;font-weight:500}
+.plan-card .premi-value{font-size:.95rem;font-weight:700;color:#00a758}
+.calc-info-box{background:linear-gradient(135deg,#E8F5EE,#D5F5E3);border-radius:12px;padding:18px 22px;margin:20px 0;border-left:4px solid #2ECC71}
+.calc-info-box h4{color:#00a758;font-size:.9rem;margin-bottom:6px}
+.calc-info-box p{font-size:.82rem;color:#333;margin:4px 0}
+
+/* FAQ Accordion */
+.faq-item{background:#fff;border-radius:8px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.faq-question{padding:16px 20px;cursor:pointer;font-weight:600;color:#333;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.faq-question:hover{background:#e8f5e9}
+.faq-question::after{content:'+';font-size:1.4rem;color:#00a758;font-weight:700;transition:transform .3s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding:0 20px}
+.faq-item.open .faq-answer{max-height:500px;padding:0 20px 16px}
+.faq-answer p{line-height:1.7;color:#555;font-size:.9rem}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+.header{padding:20px 15px}
+.tab-content{padding:20px 12px}
+.card{padding:18px}
+.calc-controls{padding:15px;gap:10px;flex-direction:column;align-items:stretch}
+.calc-control-group input{width:100%}
+.cards-grid{grid-template-columns:1fr;gap:12px}
+.calc-tabs{flex-direction:column;gap:5px}
+.result-grid{grid-template-columns:1fr}
+table{font-size:.75rem}
+}
+
+@media print{
+.wa-banner,.floating-wa,.wa-tooltip{display:none!important}
+body{padding-top:0}
+.tabs-container{position:static}
+.tab-content{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<!-- WA Banner -->
+<a href="https://wa.me/6287781896087?text=Pak%20Petrus%2C%20saya%20mau%20tanya%20soal%20MiAction" target="_blank" class="wa-banner" aria-label="WhatsApp Petrus Jakub">
+<span>Petrus Jakub Partner Bisnis Manulife</span>
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<span>087781896087</span>
+</a>
+
+<!-- Header -->
+<div class="header">
+<h1>MiAction (MiAssurance Protection Plan)</h1>
+<p>Asuransi Dwiguna Individu dari PT Asuransi Jiwa Manulife Indonesia</p>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="tabs-container">
+<ul class="tabs" id="mainTabs" role="tablist">
+<li class="active" data-tab="ringkasan" role="tab">Ringkasan Produk</li>
+<li data-tab="manfaat" role="tab">Manfaat</li>
+<li data-tab="kalkulator" role="tab">Kalkulator Premi</li>
+<li data-tab="ilustrasi" role="tab">Ilustrasi</li>
+<li data-tab="klaim" role="tab">Cara Klaim</li>
+<li data-tab="faq" role="tab">FAQ</li>
+</ul>
+</div>
+
+<!-- Tab 1: Ringkasan Produk -->
+<div class="tab-content active" id="tab-ringkasan" role="tabpanel">
+<div class="card">
+<h2>Apa itu MiAction?</h2>
+<p><strong>MiAction (MiAssurance Protection Plan)</strong> adalah asuransi dwiguna (endowment) dari Manulife Indonesia yang memberikan perlindungan jiwa sekaligus manfaat tunai yang pasti.</p>
+<p>Dengan MiAction, Anda mendapat:</p>
+<ul>
+<li><strong>Pembayaran tunai tahunan yang dijamin</strong> mulai tahun ke-6 sampai tahun ke-20</li>
+<li><strong>Manfaat akhir masa pertanggungan</strong> jika masih hidup di akhir tahun ke-20</li>
+<li><strong>Perlindungan jiwa</strong> selama 20 tahun masa pertanggungan</li>
+</ul>
+
+<h3>Detail Produk</h3>
+<ul>
+<li><strong>Usia Masuk:</strong> 1 bulan - 70 tahun</li>
+<li><strong>Masa Pertanggungan:</strong> 20 tahun</li>
+<li><strong>Masa Pembayaran Premi (MPP):</strong></li>
+<ul>
+<li><span class="badge badge-green">Premi Sekaligus</span> Bayar sekali saja di awal</li>
+<li><span class="badge badge-blue">3 Tahun</span> Bayar premi selama 3 tahun</li>
+<li><span class="badge badge-orange">5 Tahun</span> Bayar premi selama 5 tahun</li>
+</ul>
+<li><strong>Mode Pembayaran:</strong> Tahunan, Semesteran (6 bulanan), Kuartalan (3 bulanan), Bulanan</li>
+<li><strong>Mata Uang:</strong> Rupiah (IDR)</li>
+<li><strong>Minimum Premi Dasar Tahunan:</strong></li>
+<ul>
+<li>Premi Sekaligus: Rp36.000.000</li>
+<li>MPP 3 Tahun: Rp12.000.000/tahun</li>
+<li>MPP 5 Tahun: Rp6.000.000/tahun</li>
+</ul>
+<li><strong>Uang Pertanggungan Maksimal tanpa pemeriksaan medis:</strong> Rp5.500.000.000</li>
+</ul>
+
+<h3>Proses Underwriting</h3>
+<div class="info-box">
+<p><strong>SIO (Simplified Issue Offer):</strong> Tanpa pemeriksaan medis untuk UP hingga batas tertentu.</p>
+<p><strong>Full Underwriting:</strong> Diperlukan pemeriksaan medis untuk UP besar.</p>
+<p><strong>GIO (Guaranteed Issue Offer):</strong> Penerimaan dijamin untuk premi tertentu.</p>
+</div>
+
+<h3>Mengapa Memilih MiAction?</h3>
+<ul>
+<li>Manfaat yang pasti dan terjamin (bukan unit-link)</li>
+<li>Pembayaran premi singkat (3 atau 5 tahun), perlindungan panjang (20 tahun)</li>
+<li>Total manfaat hidup bisa mencapai 1,5x - 1,8x dari total premi yang dibayar</li>
+<li>Cocok untuk perencanaan keuangan jangka panjang (dana pendidikan, pensiun, dll)</li>
+</ul>
+</div>
+</div>
+
+<!-- Tab 2: Manfaat -->
+<div class="tab-content" id="tab-manfaat" role="tabpanel">
+<div class="card">
+<h2>Manfaat MiAction</h2>
+<p>MiAction memberikan 4 manfaat utama:</p>
+
+<h3>1. Manfaat Pembayaran Tunai Tahunan</h3>
+<div class="info-box">
+<p>Mulai <strong>tahun ke-6 sampai tahun ke-20</strong> (15 kali pembayaran), Anda akan menerima pembayaran tunai setiap tahun. Besarnya tergantung pilihan MPP dan jumlah premi.</p>
+</div>
+
+<h3>2. Manfaat Meninggal Dunia</h3>
+<p>Jika Tertanggung meninggal dunia selama masa pertanggungan, ahli waris akan menerima <strong>100% Uang Pertanggungan (UP)</strong>.</p>
+<p>UP dihitung sebesar <strong>110% x MPP (tahun) x Premi Dasar Tahunan</strong> (untuk MPP 3 dan 5 tahun), atau <strong>110% x Premi Sekaligus</strong> (untuk Premi Sekaligus).</p>
+
+<h3>3. Manfaat Akhir Masa Pertanggungan</h3>
+<p>Jika Tertanggung masih hidup di akhir tahun ke-20, akan menerima manfaat akhir yang besarnya tergantung tier premi.</p>
+
+<h3>4. Rider ALP Plus (Opsional)</h3>
+<p>Manfaat tambahan berupa perlindungan jiwa ekstra. Jika Tertanggung meninggal karena kecelakaan, ahli waris menerima tambahan UP dari rider ini.</p>
+
+<h3>Tabel Persentase Manfaat</h3>
+<p><strong>Tier 1: Premi Dasar Tahunan &lt; Rp30.000.000</strong></p>
+<table>
+<tr><th>MPP</th><th>Tunai Tahunan</th><th>Manfaat Akhir</th><th>Rasio Total</th></tr>
+<tr><td>3 Tahun</td><td>6% x Premi Dasar Tahunan</td><td>375% x Premi Dasar Tahunan</td><td>~1,55x</td></tr>
+<tr><td>5 Tahun</td><td>12% x Premi Dasar Tahunan</td><td>625% x Premi Dasar Tahunan</td><td>~1,61x</td></tr>
+<tr><td>Sekaligus</td><td colspan="3"><em>Tidak tersedia untuk premi &lt; 30 juta/tahun</em></td></tr>
+</table>
+
+<p><strong>Tier 2: Premi Dasar Tahunan &ge; Rp30.000.000</strong></p>
+<table>
+<tr><th>MPP</th><th>Tunai Tahunan</th><th>Manfaat Akhir</th><th>Rasio Total</th></tr>
+<tr><td>Sekaligus</td><td>2% x Premi Sekaligus</td><td>150% x Premi Sekaligus</td><td>~1,8x</td></tr>
+<tr><td>3 Tahun</td><td>9% x Premi Dasar Tahunan</td><td>400% x Premi Dasar Tahunan</td><td>~1,78x</td></tr>
+<tr><td>5 Tahun</td><td>15% x Premi Dasar Tahunan</td><td>675% x Premi Dasar Tahunan</td><td>~1,8x</td></tr>
+</table>
+
+<h3>Ringkasan Total Manfaat Hidup</h3>
+<div class="highlight-box">
+<p><strong>Total Manfaat Hidup = Total Tunai Tahunan (15 tahun) + Manfaat Akhir Masa</strong></p>
+<p>Dengan rasio total manfaat terhadap total premi dibayar berkisar antara <strong>1,55x sampai 1,8x</strong> tergantung pilihan MPP dan besaran premi.</p>
+</div>
+</div>
+</div>
+
+<!-- Tab 3: Kalkulator Premi -->
+<div class="tab-content" id="tab-kalkulator" role="tabpanel">
+<div class="card">
+<h2>Kalkulator Premi MiAction</h2>
+<p style="margin-bottom:20px">Hitung estimasi manfaat MiAction berdasarkan pilihan Masa Pembayaran Premi, mode pembayaran, dan jumlah premi Anda.</p>
+
+<!-- Calculator Tabs (MPP selection) -->
+<div class="calc-tabs" id="calcTabs">
+<button class="calc-tab-btn" data-mpp="sekaligus" onclick="switchMPP('sekaligus')">Sekaligus</button>
+<button class="calc-tab-btn" data-mpp="3" onclick="switchMPP('3')">MPP 3 Tahun</button>
+<button class="calc-tab-btn active" data-mpp="5" onclick="switchMPP('5')">MPP 5 Tahun</button>
+</div>
+
+<!-- Calculator Controls -->
+<div class="calc-controls">
+<div class="calc-control-group" id="modeGroup">
+<label>Mode Pembayaran</label>
+<select id="modeBayar" onchange="calculate()">
+<option value="tahunan">Tahunan</option>
+<option value="semesteran">Semesteran</option>
+<option value="kuartalan">Kuartalan</option>
+<option value="bulanan">Bulanan</option>
+</select>
+</div>
+<div class="calc-control-group">
+<label id="premiLabel">Premi per Tahun (Rp)</label>
+<input type="text" id="premiInput" placeholder="Contoh: 10.000.000" oninput="formatPremiInput(this)">
+</div>
+<div class="calc-control-group">
+<button class="calc-btn" onclick="calculate()">Hitung</button>
+</div>
+</div>
+
+<!-- Calculator Results -->
+<div id="calcResults"></div>
+
+<!-- Info Box -->
+<div class="calc-info-box">
+<h4>Cara Menggunakan Kalkulator</h4>
+<p>1. Pilih Masa Pembayaran Premi (Sekaligus / 3 Tahun / 5 Tahun)</p>
+<p>2. Pilih Mode Pembayaran (untuk MPP 3 & 5 tahun)</p>
+<p>3. Masukkan jumlah premi yang ingin Anda bayar</p>
+<p>4. Klik "Hitung" untuk melihat estimasi manfaat</p>
+</div>
+
+<div class="calc-info-box">
+<h4>Minimum Premi (Premi Dasar Tahunan)</h4>
+<p>Sekaligus: min Rp36.000.000 | MPP 3 Tahun: min Rp12.000.000/tahun | MPP 5 Tahun: min Rp6.000.000/tahun</p>
+</div>
+</div>
+</div>
+
+<!-- Tab 4: Ilustrasi -->
+<div class="tab-content" id="tab-ilustrasi" role="tabpanel">
+<div class="card">
+<h2>Ilustrasi Manfaat MiAction</h2>
+<p>Berikut contoh ilustrasi manfaat untuk beberapa pilihan premi (MPP 5 Tahun, Tahunan):</p>
+</div>
+
+<div class="section-title">Contoh Ilustrasi MPP 5 Tahun</div>
+<div class="cards-grid" id="ilustrasiCards">
+<!-- Plan 1 -->
+<div class="plan-card animate">
+<div class="card-header">Plan 1: Rp6.000.000/tahun</div>
+<div class="card-body">
+<div class="premi-row"><span class="premi-label">Premi per Tahun</span><span class="premi-value">Rp6.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Premi (5 thn)</span><span class="premi-value">Rp30.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Uang Pertanggungan</span><span class="premi-value">Rp33.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Tunai Tahunan (thn 6-20)</span><span class="premi-value">Rp720.000/thn</span></div>
+<div class="premi-row"><span class="premi-label">Total Tunai (15x)</span><span class="premi-value">Rp10.800.000</span></div>
+<div class="premi-row"><span class="premi-label">Manfaat Akhir (thn 20)</span><span class="premi-value">Rp37.500.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Manfaat Hidup</span><span class="premi-value" style="color:#006838;font-size:1rem">Rp48.300.000</span></div>
+<div class="premi-row"><span class="premi-label">Rasio Manfaat/Premi</span><span class="premi-value">1,61x</span></div>
+</div>
+</div>
+<!-- Plan 2 -->
+<div class="plan-card animate">
+<div class="card-header">Plan 2: Rp10.000.000/tahun</div>
+<div class="card-body">
+<div class="premi-row"><span class="premi-label">Premi per Tahun</span><span class="premi-value">Rp10.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Premi (5 thn)</span><span class="premi-value">Rp50.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Uang Pertanggungan</span><span class="premi-value">Rp55.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Tunai Tahunan (thn 6-20)</span><span class="premi-value">Rp1.200.000/thn</span></div>
+<div class="premi-row"><span class="premi-label">Total Tunai (15x)</span><span class="premi-value">Rp18.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Manfaat Akhir (thn 20)</span><span class="premi-value">Rp62.500.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Manfaat Hidup</span><span class="premi-value" style="color:#006838;font-size:1rem">Rp80.500.000</span></div>
+<div class="premi-row"><span class="premi-label">Rasio Manfaat/Premi</span><span class="premi-value">1,61x</span></div>
+</div>
+</div>
+<!-- Plan 3 -->
+<div class="plan-card animate">
+<div class="card-header">Plan 3: Rp30.000.000/tahun</div>
+<div class="card-body">
+<div class="premi-row"><span class="premi-label">Premi per Tahun</span><span class="premi-value">Rp30.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Premi (5 thn)</span><span class="premi-value">Rp150.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Uang Pertanggungan</span><span class="premi-value">Rp165.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Tunai Tahunan (thn 6-20)</span><span class="premi-value">Rp4.500.000/thn</span></div>
+<div class="premi-row"><span class="premi-label">Total Tunai (15x)</span><span class="premi-value">Rp67.500.000</span></div>
+<div class="premi-row"><span class="premi-label">Manfaat Akhir (thn 20)</span><span class="premi-value">Rp202.500.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Manfaat Hidup</span><span class="premi-value" style="color:#006838;font-size:1rem">Rp270.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Rasio Manfaat/Premi</span><span class="premi-value">1,80x</span></div>
+</div>
+</div>
+<!-- Plan 4 -->
+<div class="plan-card animate">
+<div class="card-header">Plan 4: Rp100.000.000/tahun</div>
+<div class="card-body">
+<div class="premi-row"><span class="premi-label">Premi per Tahun</span><span class="premi-value">Rp100.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Premi (5 thn)</span><span class="premi-value">Rp500.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Uang Pertanggungan</span><span class="premi-value">Rp550.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Tunai Tahunan (thn 6-20)</span><span class="premi-value">Rp15.000.000/thn</span></div>
+<div class="premi-row"><span class="premi-label">Total Tunai (15x)</span><span class="premi-value">Rp225.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Manfaat Akhir (thn 20)</span><span class="premi-value">Rp675.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Total Manfaat Hidup</span><span class="premi-value" style="color:#006838;font-size:1rem">Rp900.000.000</span></div>
+<div class="premi-row"><span class="premi-label">Rasio Manfaat/Premi</span><span class="premi-value">1,80x</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Tab 5: Cara Klaim -->
+<div class="tab-content" id="tab-klaim" role="tabpanel">
+<div class="card">
+<h2>Cara Klaim MiAction</h2>
+
+<h3>Pengajuan Klaim Manfaat Tunai Tahunan & Akhir Masa</h3>
+<div class="info-box">
+<p>Manfaat tunai tahunan dan manfaat akhir masa pertanggungan akan dibayarkan secara otomatis ke rekening Anda yang terdaftar. Pastikan data rekening Anda selalu diperbarui.</p>
+</div>
+
+<h3>Pengajuan Klaim Meninggal Dunia</h3>
+<ol>
+<li>Hubungi agen/marketing office Manulife atau ajukan melalui aplikasi <strong>MiAccount</strong></li>
+<li>Siapkan dokumen berikut:
+<ul>
+<li>Formulir klaim yang sudah diisi lengkap</li>
+<li>Polis asli</li>
+<li>Fotokopi KTP Tertanggung dan Pemegang Polis</li>
+<li>Akta kematian asli atau fotokopi yang dilegalisir</li>
+<li>Surat keterangan dokter tentang penyebab kematian</li>
+<li>Surat keterangan dari kepolisian (jika meninggal karena kecelakaan)</li>
+<li>Fotokopi buku rekening ahli waris</li>
+</ul>
+</li>
+<li>Kirim dokumen ke kantor Manulife atau melalui agen Anda</li>
+<li>Proses klaim memakan waktu maksimal <strong>30 hari kerja</strong> setelah dokumen lengkap diterima</li>
+</ol>
+
+<h3>Pengecualian (Klaim Tidak Dibayar)</h3>
+<div class="highlight-box">
+<p><strong>Klaim meninggal dunia TIDAK dibayarkan jika:</strong></p>
+<ul style="margin-top:8px;padding-left:20px">
+<li>Bunuh diri dalam 2 tahun pertama polis</li>
+<li>Meninggal akibat tindak kriminal yang dilakukan Tertanggung</li>
+<li>Meninggal akibat hukuman mati</li>
+<li>Meninggal karena pembunuhan oleh Pemegang Polis atau Penerima Manfaat</li>
+</ul>
+</div>
+
+<h3>Kontak Manulife</h3>
+<div class="info-box">
+<p><strong>Customer Service:</strong> (021) 2555 7777</p>
+<p><strong>Hotline Bebas Pulsa:</strong> 0800 1 606060</p>
+<p><strong>Email:</strong> customerserviceid@manulife.com</p>
+<p><strong>Alamat:</strong> Sampoerna Strategic Square, North Tower, Jl. Jend. Sudirman Kav. 45-46, Jakarta 12930</p>
+</div>
+</div>
+</div>
+
+<!-- Tab 6: FAQ -->
+<div class="tab-content" id="tab-faq" role="tabpanel">
+<div class="card">
+<h2>Pertanyaan yang Sering Ditanya (FAQ)</h2>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apa itu MiAction?</div>
+<div class="faq-answer"><p>MiAction (MiAssurance Protection Plan) adalah produk asuransi dwiguna (endowment) dari PT Asuransi Jiwa Manulife Indonesia. Produk ini memberikan manfaat perlindungan jiwa selama 20 tahun sekaligus pembayaran tunai tahunan yang dijamin mulai tahun ke-6 dan manfaat akhir masa pertanggungan di tahun ke-20.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Siapa yang bisa membeli MiAction?</div>
+<div class="faq-answer"><p>MiAction dapat dibeli oleh siapa saja dengan usia masuk antara <strong>1 bulan sampai 70 tahun</strong>. Tidak ada persyaratan pekerjaan atau pendapatan minimum khusus, namun premi yang dibayarkan harus memenuhi minimum yang ditetapkan sesuai MPP yang dipilih.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Berapa lama masa pertanggungan MiAction?</div>
+<div class="faq-answer"><p>Masa pertanggungan MiAction adalah <strong>20 tahun</strong>. Selama 20 tahun ini, Anda mendapat perlindungan jiwa. Pembayaran tunai tahunan diterima mulai tahun ke-6 sampai tahun ke-20 (15 kali pembayaran), dan manfaat akhir masa diterima di akhir tahun ke-20 jika Tertanggung masih hidup.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apa saja manfaat yang didapat dari MiAction?</div>
+<div class="faq-answer"><p>Ada 4 manfaat utama:<br><strong>1. Manfaat Tunai Tahunan:</strong> Pembayaran tunai setiap tahun dari tahun ke-6 sampai ke-20.<br><strong>2. Manfaat Meninggal Dunia:</strong> 100% Uang Pertanggungan dibayarkan kepada ahli waris.<br><strong>3. Manfaat Akhir Masa:</strong> Pembayaran besar di akhir tahun ke-20 jika masih hidup.<br><strong>4. Rider ALP Plus (opsional):</strong> Tambahan perlindungan jiwa akibat kecelakaan.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Bagaimana cara kerja kalkulator premi?</div>
+<div class="faq-answer"><p>Kalkulator menghitung manfaat berdasarkan:<br>1. Pilih Masa Pembayaran Premi (Sekaligus/3 Tahun/5 Tahun)<br>2. Pilih mode pembayaran (Tahunan/Semesteran/Kuartalan/Bulanan)<br>3. Masukkan jumlah premi yang ingin dibayar<br>Kalkulator akan mengkonversi ke Premi Dasar Tahunan menggunakan faktor modal, lalu menghitung UP, manfaat tunai tahunan, manfaat akhir, dan total manfaat hidup.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apa itu rider ALP Plus?</div>
+<div class="faq-answer"><p><strong>ALP Plus (Accidental Life Protection Plus)</strong> adalah manfaat tambahan (rider) yang bisa ditambahkan ke polis MiAction. Rider ini memberikan tambahan Uang Pertanggungan jika Tertanggung meninggal dunia akibat kecelakaan. Premi rider ini relatif kecil dibanding manfaat tambahannya.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Bagaimana cara klaim MiAction?</div>
+<div class="faq-answer"><p>Untuk manfaat tunai tahunan dan manfaat akhir masa, pembayaran otomatis ke rekening terdaftar. Untuk klaim meninggal dunia, hubungi agen atau ajukan melalui aplikasi MiAccount. Siapkan dokumen seperti akta kematian, surat dokter, KTP, dan polis asli. Proses klaim maksimal 30 hari kerja setelah dokumen lengkap.</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apa saja pengecualian MiAction?</div>
+<div class="faq-answer"><p>Klaim meninggal dunia tidak dibayarkan jika:<br>- Bunuh diri dalam 2 tahun pertama polis aktif<br>- Meninggal akibat tindak kriminal oleh Tertanggung sendiri<br>- Meninggal karena hukuman mati<br>- Dibunuh oleh Pemegang Polis atau Penerima Manfaat</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apa bedanya Premi Sekaligus, MPP 3 Tahun, dan MPP 5 Tahun?</div>
+<div class="faq-answer"><p><strong>Premi Sekaligus:</strong> Bayar sekali di awal, minimum Rp36 juta. Hanya tersedia untuk premi >= 30 juta (tier tinggi). Rasio manfaat ~1,8x.<br><strong>MPP 3 Tahun:</strong> Bayar premi selama 3 tahun, minimum Rp12 juta/tahun. Rasio manfaat ~1,55x (tier rendah) atau ~1,78x (tier tinggi).<br><strong>MPP 5 Tahun:</strong> Bayar premi selama 5 tahun, minimum Rp6 juta/tahun. Rasio manfaat ~1,61x (tier rendah) atau ~1,8x (tier tinggi).</p></div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" aria-expanded="false">Apakah manfaat MiAction dijamin?</div>
+<div class="faq-answer"><p>Ya, semua manfaat MiAction <strong>dijamin (guaranteed)</strong>. Berbeda dengan produk unit-link yang manfaatnya tergantung kinerja investasi, manfaat MiAction sudah pasti sejak awal polis dibuat. Persentase manfaat tunai tahunan dan manfaat akhir masa sudah tercantum di polis.</p></div>
+</div>
+
+</div>
+</div>
+
+<!-- Floating WA Button -->
+<a href="https://wa.me/6287781896087?text=Pak%20Petrus%2C%20saya%20mau%20tanya%20soal%20MiAction" target="_blank" class="floating-wa" aria-label="WhatsApp">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<div class="wa-tooltip">Petrus Jakub - 087781896087</div>
+
+<script>
+// Tab Navigation
+(function(){
+var tabs = document.querySelectorAll('.tabs li');
+var contents = document.querySelectorAll('.tab-content');
+tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.classList.remove('active'); });
+        contents.forEach(function(c){ c.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.getAttribute('data-tab')).classList.add('active');
+    });
+});
+})();
+
+// FAQ Accordion
+(function(){
+var questions = document.querySelectorAll('.faq-question');
+questions.forEach(function(q){
+    q.addEventListener('click', function(){
+        var item = q.parentElement;
+        item.classList.toggle('open');
+        q.setAttribute('aria-expanded', item.classList.contains('open') ? 'true' : 'false');
+    });
+});
+})();
+
+// ============ KALKULATOR PREMI MIACTION ============
+var currentMPP = '5';
+
+function switchMPP(mpp) {
+    currentMPP = mpp;
+    var btns = document.querySelectorAll('.calc-tab-btn');
+    btns.forEach(function(b){ b.classList.remove('active'); });
+    document.querySelector('[data-mpp="'+mpp+'"]').classList.add('active');
+
+    var modeGroup = document.getElementById('modeGroup');
+    var modeBayar = document.getElementById('modeBayar');
+    var premiLabel = document.getElementById('premiLabel');
+
+    if (mpp === 'sekaligus') {
+        modeGroup.style.display = 'none';
+        modeBayar.value = 'tahunan';
+        premiLabel.textContent = 'Premi Sekaligus (Rp)';
+    } else {
+        modeGroup.style.display = 'flex';
+        premiLabel.textContent = 'Premi per ' + getModeName(modeBayar.value) + ' (Rp)';
+    }
+    document.getElementById('calcResults').innerHTML = '';
+}
+
+function getModeName(mode) {
+    switch(mode) {
+        case 'tahunan': return 'Tahun';
+        case 'semesteran': return 'Semester';
+        case 'kuartalan': return 'Kuartal';
+        case 'bulanan': return 'Bulan';
+        default: return 'Tahun';
+    }
+}
+
+function getModalFaktor(mode) {
+    switch(mode) {
+        case 'tahunan': return 1.0;
+        case 'semesteran': return 0.525;
+        case 'kuartalan': return 0.275;
+        case 'bulanan': return 0.095;
+        default: return 1.0;
+    }
+}
+
+function formatRupiah(num) {
+    if (num === null || num === undefined || isNaN(num)) return 'Rp0';
+    num = Math.round(num);
+    var str = num.toString();
+    var result = '';
+    var count = 0;
+    for (var i = str.length - 1; i >= 0; i--) {
+        result = str[i] + result;
+        count++;
+        if (count % 3 === 0 && i > 0) {
+            result = '.' + result;
+        }
+    }
+    return 'Rp' + result;
+}
+
+function parsePremiInput(val) {
+    if (!val) return 0;
+    var cleaned = val.replace(/[^\d]/g, '');
+    return parseInt(cleaned) || 0;
+}
+
+function formatPremiInput(input) {
+    var val = input.value.replace(/[^\d]/g, '');
+    if (val === '') { input.value = ''; return; }
+    var num = parseInt(val);
+    var str = num.toString();
+    var result = '';
+    var count = 0;
+    for (var i = str.length - 1; i >= 0; i--) {
+        result = str[i] + result;
+        count++;
+        if (count % 3 === 0 && i > 0) {
+            result = '.' + result;
+        }
+    }
+    input.value = result;
+
+    // Update label
+    if (currentMPP !== 'sekaligus') {
+        var mode = document.getElementById('modeBayar').value;
+        document.getElementById('premiLabel').textContent = 'Premi per ' + getModeName(mode) + ' (Rp)';
+    }
+}
+
+function calculate() {
+    var resultsDiv = document.getElementById('calcResults');
+    var premiRaw = parsePremiInput(document.getElementById('premiInput').value);
+    var mode = document.getElementById('modeBayar').value;
+
+    if (premiRaw <= 0) {
+        resultsDiv.innerHTML = '<div class="calc-error">Silakan masukkan jumlah premi terlebih dahulu.</div>';
+        return;
+    }
+
+    var premiDasarTahunan, premiSekaligus, up, tunaiTahunanPct, akhirPct;
+    var tunaiTahunan, totalTunai, manfaatAkhir, totalManfaatHidup, totalPremiDibayar, rasio;
+
+    if (currentMPP === 'sekaligus') {
+        // For Sekaligus: premi input IS the premi sekaligus directly
+        premiSekaligus = premiRaw;
+        premiDasarTahunan = premiSekaligus; // For tier check, use premi sekaligus value
+
+        // Validation: min 36jt
+        if (premiSekaligus < 36000000) {
+            resultsDiv.innerHTML = '<div class="calc-error">Minimum Premi Sekaligus adalah Rp36.000.000. Premi yang Anda masukkan: ' + formatRupiah(premiSekaligus) + '</div>';
+            return;
+        }
+
+        // Sekaligus only available for >= 30jt tier
+        // UP = 110% x Premi Sekaligus
+        up = 1.10 * premiSekaligus;
+
+        // Benefits (always >= 30jt tier for sekaligus)
+        tunaiTahunanPct = 0.02;
+        akhirPct = 1.50;
+
+        tunaiTahunan = tunaiTahunanPct * premiSekaligus;
+        totalTunai = tunaiTahunan * 15;
+        manfaatAkhir = akhirPct * premiSekaligus;
+        totalManfaatHidup = totalTunai + manfaatAkhir;
+        totalPremiDibayar = premiSekaligus;
+        rasio = totalManfaatHidup / totalPremiDibayar;
+
+    } else {
+        // MPP 3 or 5
+        var modalFaktor = getModalFaktor(mode);
+        premiDasarTahunan = premiRaw / modalFaktor;
+
+        // Minimum validation
+        var minPremi = (currentMPP === '3') ? 12000000 : 6000000;
+        if (premiDasarTahunan < minPremi) {
+            var minInput = minPremi * modalFaktor;
+            resultsDiv.innerHTML = '<div class="calc-error">Minimum Premi Dasar Tahunan untuk MPP ' + currentMPP + ' Tahun adalah ' + formatRupiah(minPremi) + '/tahun. Dengan mode ' + mode + ', minimum premi yang harus Anda masukkan adalah ' + formatRupiah(Math.ceil(minInput)) + '. Premi Dasar Tahunan Anda saat ini: ' + formatRupiah(Math.round(premiDasarTahunan)) + '</div>';
+            return;
+        }
+
+        var mppYears = parseInt(currentMPP);
+        up = 1.10 * mppYears * premiDasarTahunan;
+
+        // Determine tier
+        if (premiDasarTahunan < 30000000) {
+            // Tier 1 (< 30jt)
+            if (currentMPP === '3') {
+                tunaiTahunanPct = 0.06;
+                akhirPct = 3.75;
+            } else {
+                tunaiTahunanPct = 0.12;
+                akhirPct = 6.25;
+            }
+        } else {
+            // Tier 2 (>= 30jt)
+            if (currentMPP === '3') {
+                tunaiTahunanPct = 0.09;
+                akhirPct = 4.00;
+            } else {
+                tunaiTahunanPct = 0.15;
+                akhirPct = 6.75;
+            }
+        }
+
+        tunaiTahunan = tunaiTahunanPct * premiDasarTahunan;
+        totalTunai = tunaiTahunan * 15;
+        manfaatAkhir = akhirPct * premiDasarTahunan;
+        totalManfaatHidup = totalTunai + manfaatAkhir;
+        totalPremiDibayar = premiDasarTahunan * mppYears;
+        rasio = totalManfaatHidup / totalPremiDibayar;
+    }
+
+    // Display results
+    var html = '<div class="calc-result">';
+    html += '<h3>Hasil Perhitungan Manfaat MiAction</h3>';
+    html += '<div class="result-grid">';
+
+    if (currentMPP !== 'sekaligus') {
+        html += '<div class="result-item"><div class="result-label">Premi Dasar Tahunan</div><div class="result-value">' + formatRupiah(premiDasarTahunan) + '</div></div>';
+    } else {
+        html += '<div class="result-item"><div class="result-label">Premi Sekaligus</div><div class="result-value">' + formatRupiah(premiSekaligus) + '</div></div>';
+    }
+
+    html += '<div class="result-item"><div class="result-label">Uang Pertanggungan (UP)</div><div class="result-value">' + formatRupiah(up) + '</div></div>';
+    html += '<div class="result-item"><div class="result-label">Manfaat Tunai Tahunan (thn 6-20)</div><div class="result-value">' + formatRupiah(tunaiTahunan) + '/thn</div></div>';
+    html += '<div class="result-item"><div class="result-label">Total Manfaat Tunai (15x)</div><div class="result-value">' + formatRupiah(totalTunai) + '</div></div>';
+    html += '<div class="result-item"><div class="result-label">Manfaat Akhir Masa (thn 20)</div><div class="result-value">' + formatRupiah(manfaatAkhir) + '</div></div>';
+    html += '<div class="result-item"><div class="result-label">Manfaat Meninggal Dunia</div><div class="result-value">' + formatRupiah(up) + '</div></div>';
+    html += '<div class="result-item highlight"><div class="result-label">Total Manfaat Hidup</div><div class="result-value">' + formatRupiah(totalManfaatHidup) + '</div></div>';
+    html += '<div class="result-item"><div class="result-label">Total Premi Dibayar</div><div class="result-value">' + formatRupiah(totalPremiDibayar) + '</div></div>';
+    html += '<div class="result-item highlight"><div class="result-label">Rasio Manfaat / Premi</div><div class="result-value">' + rasio.toFixed(2) + 'x</div></div>';
+
+    html += '</div></div>';
+    resultsDiv.innerHTML = html;
+}
+
+// Update premi label on mode change
+document.getElementById('modeBayar').addEventListener('change', function(){
+    if (currentMPP !== 'sekaligus') {
+        document.getElementById('premiLabel').textContent = 'Premi per ' + getModeName(this.value) + ' (Rp)';
+    }
+});
+</script>
+</body>
+</html>
